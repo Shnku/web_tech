@@ -1,0 +1,28 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" %>
+<html>
+	<head>
+		<title> functions declerations </title>
+	</head>
+<body>
+<center>
+<h3> farenhite to celcius table</h3>
+<form action="functest.jsp" method="post">
+	<input type="text">
+</form>
+
+<%-- if "<%" used then throws error The method getConvert(int) is undefied for the type functest_jsp --%>
+<%-- must use declerations --%>
+
+<%!  
+	String getConvert(int f){
+		double c=(f-32)*5/9;
+		return ("cel= "+c+" faren= "+f);
+	}
+%>
+
+<% 
+out.print(getConvert(35));
+%>
+</center>
+</body>
+</html>

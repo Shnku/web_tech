@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="formtest.css">
+    <title>Survey Form</title>
+</head>
+
+<body>
+    <h1 id="title"></h1>
+    <p id="description"></p>
+    <form action="" id="survey-form">
+        <label id="name-label" for="name">Enter your Name: <input type="text" id="name"
+                placeholder="name title"></label><br>
+        <label for="mail" id="mail-label">Enter your Email: <input type="email" placeholder="abc@gmail.com"
+                id="mail"></label><br>
+        <label for="number" id="num-label">Enter your Number: <input type="number" id="number" min="1000000000"
+                placeholder="12345678" maxlength="10" max="9999999999"></label><br>
+        <label for="dropdown"><select name="drop" id="dropdown">
+                <option value=" ">select</option>
+                <option value="1">select 1</option>
+                <option value="2">select 2</option>
+            </select></label><br>
+        <label for="radiobutton">
+                button 1<input type="radio">
+        </label>
+        <label for="radiobutton">
+                button 2<input type="radio">
+        </label>
+    </form>
+</body>
+
+</html>

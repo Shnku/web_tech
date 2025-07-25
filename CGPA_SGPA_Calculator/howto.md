@@ -28,6 +28,7 @@ $$
    - Total Credit Hours (Credit values) = $26 + 26 = 52$
 
 4. Calculate CGPA:
+
    $$
    \text{CGPA} = \frac{442.00}{52} \approx 8.50
    $$
@@ -86,16 +87,19 @@ Here are the provided points and credit hours:
    - $10 \times 2 = 20$
 
 2. Sum the total grade points:
+
    $$
    \text{Total Grade Points} = 42 + 54 + 60 + 36 + 20 + 54 + 54 + 60 + 42 + 20 =  442
    $$
 
 3. Sum the total credit hours:
+
    $$
    \text{Total Credit Hours} = 6 + 6 + 6 + 6 + 2 + 6 + 6 + 6 + 6 + 2 = 52
    $$
 
 4. Calculate SGPA:
+
    $$
    \text{SGPA} = \frac{442}{54} \approx 8.5
    $$

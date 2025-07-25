@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGPA Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>SGPA Calculator</h1>
+        <form id="sgpaForm">
+            <div id="inputFields">
+                <div class="inputField">
+                    <input type="number" placeholder="Grade Points" required>
+                    <input type="number" placeholder="Credit Hours" required>
+                </div>
+            </div>
+            <button type="button" onclick="addInputField()">Add More</button>
+            <button type="submit">Calculate SGPA</button>
+        </form>
+        <h2 id="result"></h2>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

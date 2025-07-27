@@ -14,15 +14,46 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.box {
+    max-width: 600px;
+    margin: auto;
+    background: rgb(198, 218, 217);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.howto {
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.title {
+    cursor: pointer;
+    color: #007BFF;
+}
+
+.details {
+    /* Initially hidden */
+    display: none;
+    margin-top: 10px;
+}
+
+p {
+    padding: 10px;
+}
+
 h1,
 h2 {
     text-align: center;
 }
 
-.inputField {
+.inputField,
+.row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 10px;
+    /* margin-bottom: px; */
 }
 
 input {
@@ -43,7 +74,31 @@ button {
     cursor: pointer;
 }
 
+
 button:hover {
     background-color: #218838;
 }
 
+.formula {
+    background-color: #958181;
+    border-left: 4px solid #007BFF;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}

@@ -57,7 +57,7 @@ To calculate the **Semester Grade Point Average (SGPA)** from the provided data 
 Here are the provided points and credit hours:
 
 | Grade Points | Credit Hours |
-|--------------|--------------|
+| ------------ | ------------ |
 | 7            | 6            |
 | 9            | 6            |
 | 10           | 6            |
@@ -90,7 +90,7 @@ Here are the provided points and credit hours:
    $$\text{Total Credit Hours} = 6 + 6 + 6 + 6 + 2 + 6 + 6 + 6 + 6 + 2 = 52$$
 
 4. Calculate SGPA:
-   $$\text{SGPA} = \frac{442}{54} \approx 8.5$$
+   $$\text{SGPA} = \frac{442}{52} \approx 8.5$$
 
 Thus, the SGPA would be approximately **8.5**.
 

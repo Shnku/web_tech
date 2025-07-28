@@ -10,18 +10,174 @@
 
 <body>
     <div class="container">
-        <h1>SGPA Calculator</h1>
-        <form id="sgpaForm">
-            <div id="inputFields">
-                <div class="inputField">
-                    <input type="number" placeholder="Grade Points" required>
-                    <input type="number" placeholder="Credit Hours" required>
+        <!-- for Calculator 1 -->
+        <div class="box" id="sgpa">
+            <div class="howto">
+                <h2 class="title">SGPA Calculation from Given Grade-point & Credit</h2>
+                <p>The <strong>Semester Grade Point Average (SGPA)</strong> is calculated using the following formula:
+                </p>
+                <div class="formula">
+                    <p>$$\text{SGPA} = \frac{\sum (\text{Grade Points} \times \text{CreditValues})}{\sum
+                        \text{CreditValues}}$$</p>
+                </div>
+                <div class="details">
+                    <h2>SGPA Calculation</h2>
+
+                    <table>
+                        <tr>
+                            <th>Grade Points [\(G\)]</th>
+                            <th>Credit Hours [\(V\)]</th>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>6</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td>2</td>
+                        </tr>
+                    </table>
+
+                    <h3>🧮 SGPA Calculation Steps</h3>
+
+                    <ol>
+                        <li>Calculate the total grade points for each entry:
+                            <ul>
+                                <li>7 × 6 = <b>42</b></li>
+                                <li>9 × 6 = <b>54</b></li>
+                                <li>10 × 6 = <b>60</b></li>
+                                <li>6 × 6 = <b>36</b></li>
+                                <li>10 × 2 = <b>20</b></li>
+                            </ul>
+                        </li>
+                        <li>Sum the total weighted grade points: </li>
+                        <ul>
+                            <li>
+                                \(\sum (G \times V)\) = 42 + 54 + 60 + 36 + 20 = <b>212</b>
+                            </li>
+                        </ul>
+                        <li>Sum the total credit hours:
+                            <ul>
+                                <li>
+                                    \(\sum G \) = 6 + 6 + 6 + 6 + 2 = <b>26</b>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>Calculate <b>SGPA</b>:
+                            <ul>
+                                <li>
+                                    \( \dfrac{Total_{G \times V}}{Total_{Credit}} = \dfrac{212}{26} = 8.15 \)
+                                </li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <p>Thus, the SGPA would be approximately <b>8.15</b>.</p>
+
+
                 </div>
             </div>
-            <button type="button" onclick="addInputField()">Add More</button>
+            <div class="inputField">
+                <input type="number" placeholder="Grade" required>
+                <input type="number" placeholder="Credit" required>
+                <button type="button" onclick="addItem('sgpa')">Done</button>
+            </div>
+            <div class="taskList"></div>
             <button type="submit">Calculate SGPA</button>
-        </form>
-        <h2 id="result"></h2>
+            <h2 id="ans_sgpa"></h2>
+        </div>
+        <hr>
+
+        <!-- for calculation 2 -->
+        <div class="box" id="cgpa">
+            <div class="howto">
+                <h2 class="title">CGPA Calculation from Given SGPA</h2>
+                <p>To calculate the <strong>Cumulative Grade Point Average (CGPA)</strong> from the provided
+                    <strong>SGPA</strong>
+                    values and their corresponding <strong>credit hours</strong>, we can use the formula:
+                </p>
+
+                <div class="formula">
+                    <p>$$\text{CGPA} = \frac{\sum (\text{SGPA}_i \times \text{CreditValues}_i)}{\sum
+                        \text{CreditValues}_i}$$</p>
+                </div>
+                <div class="details">
+                    <h2>SGPA Calculation</h2>
+                    <table>
+                        <tr>
+                            <th>SGPA ( \(sem_i\) )</th>
+                            <th>Credit value</th>
+                        </tr>
+                        <tr>
+                            <td>8.15</td>
+                            <td>26</td>
+                        </tr>
+                        <tr>
+                            <td>8.85</td>
+                            <td>26</td>
+                        </tr>
+                    </table>
+                    <h3>🧮 Calculation Steps</h3>
+                    <ol>
+                        <li>Calculate the weighted SGPA for each semester:
+                            <ul>
+                                <li>Semester 1: \( 8.15 \times 26 = 211.90 \)</li>
+                                <li>Semester 2: \( 8.85 \times 26 = 230.10 \)</li>
+                            </ul>
+                        </li>
+                        <li>Sum the weighted SGPA:
+                            <ul>
+                                <li>Total Weighted SGPA = \( 211.90 + 230.10 = 442.00 \)</li>
+                            </ul>
+                        </li>
+                        <li>Sum the total credit hours:
+                            <ul>
+                                <li>Total Credit Hours (Credit values) = \( 26 + 26 = 52 \)</li>
+                            </ul>
+                        </li>
+                        <li>Calculate CGPA:
+                            $$\text{CGPA} = \frac{442.00}{52} \approx 8.50$$
+                        </li>
+                    </ol>
+                    <p>Thus, the CGPA would be approximately <strong>8.50</strong>.</p>
+                </div>
+            </div>
+            <div class="inputField">
+                <input type="number" placeholder="Grade" required>
+                <input type="number" placeholder="Credit" required>
+                <button type="button" onclick="addItem('cgpa')">Done</button>
+            </div>
+            <div class="taskList"></div>
+            <button type="submit">Calculate CGPA</button>
+            <h2 id="ans_cgpa"></h2>
+        </div>
+        <hr>
+
+        <!-- for percentage calculation -->
+        <div class="box" id="percent">
+            <div class="howto">
+                <h2 class="title">Percentage Calculation</h2>
+                <p>
+                    To convert (CGPA) or (SGPA) to a percentage, you can use the following formula:
+
+                    $$
+                    \text{Percentage} = \text{SGPA}\times 10 - 0.5
+                    $$
+                </p>
+                <h2 id="ans_percentage"></h2>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         <!-- for Calculator 1 -->
-        <div class="box">
+        <div class="box" id="sgpa">
             <div class="howto">
                 <h2 class="title">SGPA Calculation from Given Grade-point & Credit</h2>
                 <p>The <strong>Semester Grade Point Average (SGPA)</strong> is calculated using the following formula:
@@ -90,20 +90,19 @@
 
                 </div>
             </div>
-            <form id="sgpaForm">
-                <div class="inputField" id="inputField">
-                    <input type="number" placeholder="Grade Points" required>
-                    <input type="number" placeholder="Credit Hours" required>
-                    <button type="reset">delete</button>
-                </div>
-                <button type="button" onclick="addInputField()">Add More</button>
-                <button type="submit">Calculate SGPA</button>
-            </form>
+            <div class="inputField">
+                <input type="number" placeholder="Grade" required>
+                <input type="number" placeholder="Credit" required>
+                <button type="button" onclick="addItem('sgpa')">Done</button>
+            </div>
+            <div class="taskList"></div>
+            <button type="submit">Calculate SGPA</button>
             <h2 id="ans_sgpa"></h2>
         </div>
         <hr>
+
         <!-- for calculation 2 -->
-        <div class="box">
+        <div class="box" id="cgpa">
             <div class="howto">
                 <h2 class="title">CGPA Calculation from Given SGPA</h2>
                 <p>To calculate the <strong>Cumulative Grade Point Average (CGPA)</strong> from the provided
@@ -156,22 +155,21 @@
                     <p>Thus, the CGPA would be approximately <strong>8.50</strong>.</p>
                 </div>
             </div>
-            <form id="cgpaForm">
-                <div class="inputField" id="inputField">
-                    <input type="number" placeholder="Grade Points" required>
-                    <input type="number" placeholder="Credit Hours" required>
-                    <button type="reset">delete</button>
-                </div>
-                <button type="button" onclick="addInputField()">Add More</button>
-                <button type="submit">Calculate CGPA</button>
-            </form>
+            <div class="inputField">
+                <input type="number" placeholder="Grade" required>
+                <input type="number" placeholder="Credit" required>
+                <button type="button" onclick="addItem('cgpa')">Done</button>
+            </div>
+            <div class="taskList"></div>
+            <button type="submit">Calculate CGPA</button>
             <h2 id="ans_cgpa"></h2>
         </div>
         <hr>
+
         <!-- for percentage calculation -->
-        <div class="box">
+        <div class="box" id="percent">
             <div class="howto">
-                <h2 class="title" id="percent">Percentage Calculation</h2>
+                <h2 class="title">Percentage Calculation</h2>
                 <p>
                     To convert (CGPA) or (SGPA) to a percentage, you can use the following formula:
 

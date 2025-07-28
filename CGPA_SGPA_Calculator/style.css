@@ -53,7 +53,17 @@ h2 {
 .row {
     display: flex;
     justify-content: space-between;
-    /* margin-bottom: px; */
+    gap: 5px;
+}
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 input {
@@ -63,16 +73,6 @@ input {
     border-radius: 5px;
 }
 
-button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #a79a28;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
 
 
 button:hover {
@@ -83,7 +83,7 @@ button:hover {
     background-color: #958181;
     border-left: 4px solid #007BFF;
     padding: 10px;
-    margin: 10px 0;
+    /* margin: 10px 0; */
 }
 
 table {

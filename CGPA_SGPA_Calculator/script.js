@@ -21,58 +21,89 @@ function addItem(which) {
 
     console.log(gradeInput, creditInput, "selected successfully... ");
     // Get the values from the input fields
-    const grade = gradeInput.value;
-    const credit = creditInput.value;
+    const grade = gradeInput.value == null ? 0 : gradeInput.value;
+    const credit = creditInput.value == null ? 0 : creditInput.value;
 
     // Log the values to the console
     console.log('Grade:', grade);
     console.log('Credit:', credit);
 
-    // let dta = `<p> $grade , $credit </p>`
     const taskList = document.querySelector(`#${which} .taskList`);
     const newItem = document.createElement('div');
     newItem.className = 'task';
     newItem.innerHTML = `
-                <span>${grade}, ${credit}</span>
-                <button class="delete-button">Delete</button>
+                <span class="grade">${grade}</span>
+                <span class="credit">${credit}</span>
+                <button class="delete-button" onclick="delete_item(${which})">Delete</button>
             `;
     taskList.append(newItem);
     // Clear the input fields
     gradeInput.value = '';
     creditInput.value = '';
 
+    // Add event listener to the delete button
+    newItem.querySelector('.delete-button').addEventListener('click', () => {
+        newItem.remove(); // Remove the task element
+    });
     // Add event listener to the "Done" button
     // document.querySelector(`#${which} .inputField button`).addEventListener('click', getInputValues);
 }
 
 
-function delete_item(which) {
-    // Add event listener to the delete button
-    const deleteButton = document.querySelector('.delete-button');
-    deleteButton.addEventListener('click', () => {
-        inputField.removeChild(document);
-    });
+function calculate(gradelist, creditlist) {
+    var sumGxV = 0;
+    var sumV = 0;
+    for (let i = 0; i < gradelist.length; i++) {
+        let GxV = gradelist[i] * creditlist[i];
+        sumGxV += GxV;
+        sumV += creditlist[i];
+    }
+    return sumGxV / sumV;
 }
 
 
-document.getElementById('sgpaForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-    const inputs = document.querySelectorAll('.inputField');
-    let totalGradePoints = 0;
-    let totalCreditHours = 0;
+// const CGPAs = document.querySelectorAll("#sgpa .taskList .task");
+// const SGPAs = document.querySelectorAll("#cgpa .taskList .task");;
+// Function to get values from task lists
+function getValuesFromTasks() {
+    const CGPAs = document.querySelectorAll("#cgpa .taskList .task");
+    const SGPAs = document.querySelectorAll("#sgpa .taskList .task");
 
-    inputs.forEach(input => {
-        const gradePoints = parseFloat(input.children[0].value);
-        const creditHours = parseFloat(input.children[1].value);
-        totalGradePoints += gradePoints * creditHours;
-        totalCreditHours += creditHours;
+    console.log("shgahgsd", CGPAs)
+    // Array to hold the values
+    const cgpaValues = [];
+    const sgpaValues = [];
+
+    // Extract values from CGPA tasks
+    CGPAs.forEach(task => {
+        const spans = task.querySelectorAll('span');
+        const grade = spans[0].innerText; // Assuming the first span is for grade
+        const credit = spans[1].innerText; // Assuming the second span is for credit
+        cgpaValues.push({ grade: parseFloat(grade), credit: parseFloat(credit) });
     });
 
-    const sgpa = (totalGradePoints / totalCreditHours).toFixed(2);
-    document.getElementById('result').innerText = `SGPA: ${sgpa}`;
+    // Extract values from SGPA tasks
+    SGPAs.forEach(task => {
+        const spans = task.querySelectorAll('span');
+        const grade = spans[0].innerText; // Assuming the first span is for grade
+        const credit = spans[1].innerText; // Assuming the second span is for credit
+        sgpaValues.push({ grade: parseFloat(grade), credit: parseFloat(credit) });
+    });
+
+    console.log('CGPA Values:', cgpaValues);
+    console.log('SGPA Values:', sgpaValues);
+}
+
+// Call the function to get values
+
+
+document.querySelector(`#sgpa button[type="submit"]`).addEventListener('click', function (event) {
+    console.log("clicked....")
+    getValuesFromTasks();
+    calculate(); // Call the calculation function
 });
-
-
-
-
-
+document.querySelector('#cgpa button[type="submit"]').addEventListener('click', function (event) {
+    console.log("clicked....")
+    getValuesFromTasks();
+    calculate(); // Call the calculation function
+});

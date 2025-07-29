@@ -19,10 +19,10 @@ function addItem(which) {
     const gradeInput = document.querySelector(`#${which} .inputField input[placeholder="Grade"]`);
     const creditInput = document.querySelector(`#${which} .inputField input[placeholder="Credit"]`);
 
-    console.log(gradeInput, creditInput, "selected successfully... ");
+    console.log(gradeInput.value, creditInput.value, "selected successfully... ");
     // Get the values from the input fields
-    const grade = gradeInput.value == null ? 0 : gradeInput.value;
-    const credit = creditInput.value == null ? 0 : creditInput.value;
+    const grade = gradeInput.value == '' ? 0 : gradeInput.value;
+    const credit = creditInput.value == '' ? 0 : creditInput.value;
 
     // Log the values to the console
     console.log('Grade:', grade);
@@ -61,49 +61,34 @@ function calculate(gradelist, creditlist) {
     return sumGxV / sumV;
 }
 
-
-// const CGPAs = document.querySelectorAll("#sgpa .taskList .task");
-// const SGPAs = document.querySelectorAll("#cgpa .taskList .task");;
-// Function to get values from task lists
-function getValuesFromTasks() {
-    const CGPAs = document.querySelectorAll("#cgpa .taskList .task");
-    const SGPAs = document.querySelectorAll("#sgpa .taskList .task");
-
-    console.log("shgahgsd", CGPAs)
-    // Array to hold the values
-    const cgpaValues = [];
-    const sgpaValues = [];
-
-    // Extract values from CGPA tasks
-    CGPAs.forEach(task => {
-        const spans = task.querySelectorAll('span');
-        const grade = spans[0].innerText; // Assuming the first span is for grade
-        const credit = spans[1].innerText; // Assuming the second span is for credit
-        cgpaValues.push({ grade: parseFloat(grade), credit: parseFloat(credit) });
+function parsing(which) {
+    console.log("parsing....");
+    const GPAs = document.querySelectorAll(`#${which} .taskList .task`);
+    const grades = [];
+    const credits = [];
+    // Loop through each task to extract grades and credits
+    GPAs.forEach(item => {
+        const grade = parseFloat(item.querySelector('.grade').innerText);
+        grades.push(grade);
+        const credit = parseFloat(item.querySelector('.credit').innerText);
+        credits.push(credit);
     });
-
-    // Extract values from SGPA tasks
-    SGPAs.forEach(task => {
-        const spans = task.querySelectorAll('span');
-        const grade = spans[0].innerText; // Assuming the first span is for grade
-        const credit = spans[1].innerText; // Assuming the second span is for credit
-        sgpaValues.push({ grade: parseFloat(grade), credit: parseFloat(credit) });
-    });
-
-    console.log('CGPA Values:', cgpaValues);
-    console.log('SGPA Values:', sgpaValues);
+    console.log("Grades:", grades, "Credits:", credits);
+    return Array(grades, credits);
 }
 
+
 // Call the function to get values
-
-
-document.querySelector(`#sgpa button[type="submit"]`).addEventListener('click', function (event) {
-    console.log("clicked....")
-    getValuesFromTasks();
-    calculate(); // Call the calculation function
-});
 document.querySelector('#cgpa button[type="submit"]').addEventListener('click', function (event) {
     console.log("clicked....")
-    getValuesFromTasks();
-    calculate(); // Call the calculation function
+    data = parsing('cgpa')
+    ans = calculate(data[0], data[1]);
+    document.getElementById('ans_cgpa').innerHTML = `<center> CGPA=${ans} </center>`;
+});
+
+document.querySelector('#sgpa button[type="submit"]').addEventListener('click', function (event) {
+    console.log("clicked....")
+    data = parsing('sgpa')
+    ans = calculate(data[0], data[1]);
+    document.getElementById('ans_sgpa').innerHTML = `<center> SGPA=${ans} </center>`;
 });

@@ -1,21 +1,66 @@
 body {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    color: aliceblue;
-    background-color: #060514;
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    color: #ffffff;
     margin: 0;
     padding: 20px;
 }
 
-div {
-    max-width: 600px;
+.container {
+    max-width: 800px;
     margin: auto;
-    background: rgb(43, 40, 40);
+    background: #1e1e1e;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    text-align: center;
 }
 
-h1,
-h2 {
-    text-align: center;
+h1 {
+    color: #ffff00;
+    margin-bottom: 20px;
+}
+
+.widget-container {
+    display: flex;
+    /* Stack widgets vertically */
+    flex-direction: column;
+    /* Space between widgets */
+    gap: 20px;
+}
+
+.widget {
+    display: block;
+    background-color: #2a2a2a;
+    color: #ffffff;
+    /* Remove underline */
+    text-decoration: none;
+    border-radius: 10px;
+    overflow: hidden;
+    /* Smooth transition */
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.widget:hover {
+    background-color: #400b0baf;
+    transform: translateY(-5px);
+    /* Lift effect on hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    /* Deeper shadow on hover */
+}
+
+.widget-content {
+    padding: 20px;
+}
+
+.widget-content h2 {
+    margin: 0;
+    color: hsl(201, 84%, 52%);
+    /* Bright color for widget titles */
+}
+
+.widget-content p {
+    margin: 10px 0 0;
+    color: #e0e0e0;
 }

@@ -7,9 +7,18 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 export function render({ model, el }) {
     const container = document.createElement("div");
     container.classList.add("matrix-container");
+    const input = document.createElement("input");
+    input.placeholder = "Enter node name";
+    const addButton = document.createElement("button");
+    addButton.textContent = "Add Node";
+    const removeButton = document.createElement("button");
+    removeButton.textContent = "Remove Node";
+    container.appendChild(input);
+    container.appendChild(addButton);
+    container.appendChild(removeButton);
     el.appendChild(container);
 
-    const nodes = model.get("names").map(name => ({ id: name, x: 100, y: 100 }));
+    let nodes = model.get("names").map(name => ({ id: name, x: 100, y: 100 }));
     let links = [];
     let selectedNode = null;
 
@@ -44,7 +53,7 @@ export function render({ model, el }) {
     let linkGroup = svg.append("g");
     let nodeGroup = svg.append("g");
 
-    const node = nodeGroup.selectAll(".node")
+    let node = nodeGroup.selectAll(".node")
         .data(nodes)
         .join("circle")
         .attr("class", "node")
@@ -52,13 +61,32 @@ export function render({ model, el }) {
         .attr("fill", "#69b3a2")
         .on("click", handleNodeClick);
 
-    const labels = nodeGroup.selectAll(".label")
+    let labels = nodeGroup.selectAll(".label")
         .data(nodes)
         .join("text")
         .attr("class", "label")
         .attr("dx", 15)
         .attr("dy", 4)
         .text(d => d.id);
+
+    // --- Add Node Button ---
+    addButton.addEventListener("click", () => {
+        const name = input.value.trim();
+        if (!name) return;
+        if (nodes.some(n => n.id === name)) {
+            alert("Node already exists!");
+            return;
+        }
+        const newNode = { id: name, x: 100, y: 100 };
+        nodes.push(newNode);
+        console.log("nodes------------" + nodes);
+        simulation.nodes(nodes);
+        updateNodes();
+        updateLinks();
+
+        input.value = "";
+    });
+
 
     function handleNodeClick(event, d) {
         if (!selectedNode) {
@@ -91,6 +119,29 @@ export function render({ model, el }) {
         }
 
         model.set("links", links.map(l => ({ source: l.source.id, target: l.target.id })));
+        model.save_changes();
+    }
+
+    function updateNodes() {
+        node = nodeGroup.selectAll(".node")
+            .data(nodes)
+            .join("circle")
+            .attr("class", "node")
+            .attr("r", 10)
+            .attr("fill", "#69b3a2")
+            .on("click", handleNodeClick);
+
+        labels = nodeGroup.selectAll(".label")
+            .data(nodes)
+            .join("text")
+            .attr("class", "label")
+            .attr("dx", 15)
+            .attr("dy", 4)
+            .text(d => d.id);
+
+        simulation.alpha(0.1).restart();
+        node.call(drag);
+        model.set("names", nodes.map(n => n.id));
         model.save_changes();
     }
 

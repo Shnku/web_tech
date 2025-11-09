@@ -79,14 +79,38 @@ export function render({ model, el }) {
         }
         const newNode = { id: name, x: 100, y: 100 };
         nodes.push(newNode);
-        console.log("nodes------------" + nodes);
         simulation.nodes(nodes);
         updateNodes();
         updateLinks();
-
+        input.value = "";
+    });
+    // --- Delete Node Button ---
+    removeButton.addEventListener("click", () => {
+        const name = input.value.trim();
+        if (!name) return;
+        if (nodes.some(n => n.id === name)) {
+            nodes = nodes.filter(n => n.id !== name);
+            updateNodes()
+            links = links.filter(l => {
+                const s = getEndpointId(l.source);
+                const t = getEndpointId(l.target);
+                return s !== name && t !== name;
+            });
+            simulation.force("link").links(links);
+            updateNodes();
+            updateLinks();
+            model.set("links", links.map(l => ({ source: l.source.id, target: l.target.id })));
+            model.save_changes();
+        }
+        simulation.nodes(nodes).on("tick", ticked);
+        simulation.force("link").links(links);
+        simulation.alpha(1).restart();
         input.value = "";
     });
 
+    function getEndpointId(ep) {
+        return (typeof ep === "object" && ep !== null) ? ep.id : ep;
+    }
 
     function handleNodeClick(event, d) {
         if (!selectedNode) {

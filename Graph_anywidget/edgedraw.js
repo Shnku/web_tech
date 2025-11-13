@@ -9,19 +9,25 @@ export function render({ model, el }) {
     container.classList.add("matrix-container");
     const input = document.createElement("input");
     input.placeholder = "Enter node name";
+    input.classList.add("input");
     const addButton = document.createElement("button");
     addButton.textContent = "Add Node";
+    addButton.classList.add("button");
     const removeButton = document.createElement("button");
     removeButton.textContent = "Remove Node";
+    removeButton.classList.add("button");
     container.appendChild(input);
     container.appendChild(addButton);
     container.appendChild(removeButton);
     el.appendChild(container);
 
+    // Sample nodes
     let nodes = model.get("names").map(name => ({ id: name, x: 100, y: 100 }));
-    let links = [];
+    let links = model.get("links");
+
     let selectedNode = null;
 
+    // Set up the SVG
     const width = model.get("width");
     const height = model.get("height");
     const svg = d3.select(container)
@@ -43,16 +49,20 @@ export function render({ model, el }) {
         .attr("d", "M0,-5L10,0L0,5")
         .attr("class", "arrow");
 
+    // Force simulation with gentler forces
     const simulation = d3.forceSimulation(nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(100))
         .force("charge", d3.forceManyBody().strength(-50))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("collide", d3.forceCollide().radius(50))
+        .force("collide", d3.forceCollide().radius(50))
         .on("tick", ticked);
 
+    // Create the link group and node group
     let linkGroup = svg.append("g");
     let nodeGroup = svg.append("g");
 
+    // Draw nodes
     let node = nodeGroup.selectAll(".node")
         .data(nodes)
         .join("circle")
@@ -61,6 +71,7 @@ export function render({ model, el }) {
         .attr("fill", "#69b3a2")
         .on("click", handleNodeClick);
 
+    // Add labels
     let labels = nodeGroup.selectAll(".label")
         .data(nodes)
         .join("text")
@@ -86,24 +97,27 @@ export function render({ model, el }) {
     });
     // --- Delete Node Button ---
     removeButton.addEventListener("click", () => {
-        const name = input.value.trim();
+        let name = input.value.trim();
+        if (selectedNode) {
+            console.log("what selecetd", selectedNode);
+            name = selectedNode.id;
+        }
         if (!name) return;
         if (nodes.some(n => n.id === name)) {
             nodes = nodes.filter(n => n.id !== name);
-            updateNodes()
             links = links.filter(l => {
                 const s = getEndpointId(l.source);
                 const t = getEndpointId(l.target);
                 return s !== name && t !== name;
             });
+            selectedNode = null;
             simulation.force("link").links(links);
+            simulation.nodes(nodes).on("tick", ticked);
             updateNodes();
             updateLinks();
             model.set("links", links.map(l => ({ source: l.source.id, target: l.target.id })));
             model.save_changes();
         }
-        simulation.nodes(nodes).on("tick", ticked);
-        simulation.force("link").links(links);
         simulation.alpha(1).restart();
         input.value = "";
     });
@@ -114,12 +128,16 @@ export function render({ model, el }) {
 
     function handleNodeClick(event, d) {
         if (!selectedNode) {
+            // First click - select node
             selectedNode = d;
             node.classed("selected", n => n === selectedNode);
         } else if (selectedNode === d) {
+            // Clicked same node - deselect
             selectedNode = null;
             node.classed("selected", false);
         } else {
+            // Second click - create link
+            // Check if a link already exists in either direction
             const existingForwardLink = links.find(l =>
                 (l.source === selectedNode && l.target === d) ||
                 (l.source.id === selectedNode.id && l.target.id === d.id)
@@ -129,9 +147,12 @@ export function render({ model, el }) {
                 (l.source.id === d.id && l.target.id === selectedNode.id)
             );
 
+            // Remove existing reverse link if present
             if (existingReverseLink) {
                 links = links.filter(l => l !== existingReverseLink);
             }
+
+            // Add new link if no forward link exists
             if (!existingForwardLink) {
                 links.push({ source: selectedNode, target: d });
             }
@@ -141,8 +162,9 @@ export function render({ model, el }) {
             node.classed("selected", false);
             updateLinks();
         }
-
         model.set("links", links.map(l => ({ source: l.source.id, target: l.target.id })));
+        console.log(links.map(l => ({ source: l.source.id, target: l.target.id })));
+
         model.save_changes();
     }
 
@@ -175,18 +197,25 @@ export function render({ model, el }) {
             .join("path")
             .attr("class", "link")
             .attr("marker-end", "url(#arrowhead)")
-            .attr("d", d => `M${d.source.x},${d.source.y}L${d.target.x},${d.target.y}`)
+            .attr("d", d => {
+                const dx = d.target.x - d.source.x;
+                const dy = d.target.y - d.source.y;
+                return `M${d.source.x},${d.source.y}L${d.target.x},${d.target.y}`;
+            })
             .on("click", function (event, d) {
                 event.stopPropagation();
+                // Remove link on click
                 links = links.filter(l => l !== d);
                 simulation.force("link").links(links);
                 updateLinks();
                 model.set("links", links.map(l => ({ source: l.source.id, target: l.target.id })));
+                console.log(links.map(l => ({ source: l.source.id, target: l.target.id })));
                 model.save_changes();
             });
     }
 
     function ticked() {
+        // Update node positions
         node
             .attr("cx", d => d.x = Math.max(15, Math.min(width - 15, d.x)))
             .attr("cy", d => d.y = Math.max(15, Math.min(height - 15, d.y)));
@@ -195,9 +224,11 @@ export function render({ model, el }) {
             .attr("x", d => d.x)
             .attr("y", d => d.y);
 
+        // Update link positions
         updateLinks();
     }
 
+    // Add drag behavior just for repositioning
     const drag = d3.drag()
         .on("drag", function (event, d) {
             d.x = event.x;

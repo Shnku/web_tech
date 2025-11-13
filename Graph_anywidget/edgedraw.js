@@ -96,7 +96,11 @@ export function render({ model, el }) {
     });
     // --- Delete Node Button ---
     removeButton.addEventListener("click", () => {
-        const name = input.value.trim();
+        let name = input.value.trim();
+        if (selectedNode) {
+            console.log("what selecetd", selectedNode);
+            name = selectedNode.id;
+        }
         if (!name) return;
         if (nodes.some(n => n.id === name)) {
             nodes = nodes.filter(n => n.id !== name);
@@ -105,6 +109,7 @@ export function render({ model, el }) {
                 const t = getEndpointId(l.target);
                 return s !== name && t !== name;
             });
+            selectedNode = null;
             simulation.force("link").links(links);
             simulation.nodes(nodes).on("tick", ticked);
             updateNodes();

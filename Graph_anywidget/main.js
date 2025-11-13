@@ -3,7 +3,22 @@ import { render } from "./edgedraw.js";
 const fakeModel = {
     data: {
         names: ["Alice", "Bob", "Charlie", "Diana"],
-        links: [],
+        links: [
+            {
+                "source": "Charlie",
+                "target": "Alice"
+            },
+            {
+                "source": "Charlie",
+                "target": "Diana"
+            },
+            {
+                "source": "Bob",
+                "target": "Charlie"
+            }
+
+        ],
+
         height: 500,
         width: 450,
     },

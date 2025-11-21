@@ -6,15 +6,18 @@ const fakeModel = {
         links: [
             {
                 "source": "Charlie",
-                "target": "Alice"
+                "target": "Alice",
+                "weight": 2
             },
             {
                 "source": "Charlie",
-                "target": "Diana"
+                "target": "Diana",
+                "weight": 6
             },
             {
                 "source": "Bob",
-                "target": "Charlie"
+                "target": "Charlie",
+                "weight": 4
             }
 
         ],

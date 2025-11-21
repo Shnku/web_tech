@@ -24,6 +24,8 @@ export function render({ model, el }) {
     // Sample nodes
     let nodes = model.get("names").map(name => ({ id: name, x: 100, y: 100 }));
     let links = model.get("links");
+    console.log("nodelog: ", nodes);
+    console.log("linklog: ", links);
 
     let selectedNode = null;
 
@@ -54,7 +56,6 @@ export function render({ model, el }) {
         .force("link", d3.forceLink(links).id(d => d.id).distance(100))
         .force("charge", d3.forceManyBody().strength(-50))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collide", d3.forceCollide().radius(50))
         .force("collide", d3.forceCollide().radius(50))
         .on("tick", ticked);
 
@@ -115,7 +116,7 @@ export function render({ model, el }) {
             simulation.nodes(nodes).on("tick", ticked);
             updateNodes();
             updateLinks();
-            model.set("links", links.map(l => ({ source: l.source.id, target: l.target.id })));
+            model.set("links", links.map(l => ({ source: l.source.id, target: l.target.id, weight: l.weight })));
             model.save_changes();
         }
         simulation.alpha(1).restart();
@@ -154,7 +155,8 @@ export function render({ model, el }) {
 
             // Add new link if no forward link exists
             if (!existingForwardLink) {
-                links.push({ source: selectedNode, target: d });
+                const text = prompt("enter weight:")
+                links.push({ source: selectedNode, target: d, weight: text || "none" });
             }
 
             simulation.force("link").links(links);
@@ -162,8 +164,8 @@ export function render({ model, el }) {
             node.classed("selected", false);
             updateLinks();
         }
-        model.set("links", links.map(l => ({ source: l.source.id, target: l.target.id })));
-        console.log(links.map(l => ({ source: l.source.id, target: l.target.id })));
+        model.set("links", links.map(l => ({ source: l.source.id, target: l.target.id, weight: l.weight })));
+        console.log(links.map(l => ({ source: l.source.id, target: l.target.id, weight: l.weight })));
 
         model.save_changes();
     }
@@ -208,10 +210,20 @@ export function render({ model, el }) {
                 links = links.filter(l => l !== d);
                 simulation.force("link").links(links);
                 updateLinks();
-                model.set("links", links.map(l => ({ source: l.source.id, target: l.target.id })));
-                console.log(links.map(l => ({ source: l.source.id, target: l.target.id })));
+                model.set("links", links.map(l => ({ source: l.source.id, target: l.target.id, weight: l.weight })));
+                console.log(links.map(l => ({ source: l.source.id, target: l.target.id, weight: l.weight })));
                 model.save_changes();
             });
+        // Draw weights AFTER paths (so they appear on top)
+        const weights = linkGroup.selectAll(".weights")
+            .data(links)
+            .join("text")
+            .attr("class", "weights")
+            .attr("text-anchor", "middle")
+            .text(d => d.weight)
+            .attr("x", d => (d.source.x + d.target.x) / 2)
+            .attr("y", d => (d.source.y + d.target.y) / 2);
+
     }
 
     function ticked() {

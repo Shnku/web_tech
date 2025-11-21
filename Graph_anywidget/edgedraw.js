@@ -156,7 +156,7 @@ export function render({ model, el }) {
             // Add new link if no forward link exists
             if (!existingForwardLink) {
                 const text = prompt("enter weight:")
-                links.push({ source: selectedNode, target: d, weight: text || "fuck" });
+                links.push({ source: selectedNode, target: d, weight: text || "none" });
             }
 
             simulation.force("link").links(links);
